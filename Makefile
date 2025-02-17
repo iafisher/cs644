@@ -2,7 +2,7 @@ CC = clang
 CFLAGS = -Wall -Wpedantic -Werror
 OUTDIR = out
 
-${OUTDIR}/crashcourse: crashcourse.c
+${OUTDIR}/crashcourse: week1/crashcourse.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 .PHONY: clean

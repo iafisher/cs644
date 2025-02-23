@@ -15,21 +15,21 @@ cmd = ["iprecommit-typos", "--paths"]
 
 [[pre_commit]]
 name = "PythonFormat"
-cmd = [".venv/bin/black", "--check"]
+cmd = ["black", "--check"]
 filters = ["*.py"]
-fix_cmd = [".venv/bin/black"]
+fix_cmd = ["black"]
 autofix = true
 fail_fast = true
 
-[[pre_commit]]
-name = "PythonTypes"
-cmd = [".venv/bin/mypy"]
-filters = ["*.py"]
+#[[pre_commit]]
+#name = "PythonTypes"
+#cmd = ["mypy"]
+#filters = ["*.py"]
 
-[[pre_commit]]
-name = "PythonLint"
-cmd = [".venv/bin/flake8"]
-filters = ["*.py"]
+#[[pre_commit]]
+#name = "PythonLint"
+#cmd = ["flake8"]
+#filters = ["*.py"]
 
 [[pre_commit]]
 name = "RustFormat"

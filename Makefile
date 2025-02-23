@@ -2,9 +2,12 @@ CC = clang
 CFLAGS = -Wall -Wpedantic -Werror
 OUTDIR = out
 
-all: ${OUTDIR}/crashcourse ${OUTDIR}/switch.o
+all: ${OUTDIR}/crashcourse ${OUTDIR}/redact ${OUTDIR}/switch.o
 
 ${OUTDIR}/crashcourse: week1/crashcourse.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+${OUTDIR}/redact: week1/solutions/redact.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 ${OUTDIR}/switch.o: week1/switch.c

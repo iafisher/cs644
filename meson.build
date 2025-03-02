@@ -6,9 +6,15 @@ werror = true
 incdir = include_directories('include')
 libfile = 'lib/cs644.c'
 
+# final projects
+executable('db', 'final/db/main.c', libfile, include_directories: incdir)
+
+# week 1
 executable('crashcourse', 'week1/crashcourse.c')
 executable('switch', 'week1/switch.c')
 executable('redact', 'week1/solutions/redact.c')
+
+# week 2
 executable('week2-example', 'week2/example.c')
 executable('count-whitespace', 'week2/solutions/count-whitespace.c')
 executable('line-by-line', 'week2/solutions/line-by-line.c', libfile, include_directories: incdir)

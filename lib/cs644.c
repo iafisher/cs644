@@ -5,10 +5,14 @@
 #include <string.h>
 
 
+void bail(const char* msg) {
+  fprintf(stderr, "fatal: %s\n", msg);
+  exit(1);
+}
+
 void* oom_if_null(void* p) {
   if (p == NULL) {
-      fputs("fatal: out of memory", stderr);
-      exit(1);
+    bail("out of memory");
   }
   return p;
 }
@@ -18,6 +22,10 @@ void handle_err(long long r, const char* s) {
     perror(s);
     exit(1);
   }
+}
+
+void* malloc_s(size_t n) {
+  return oom_if_null(malloc(n));
 }
 
 void* realloc_s(void* p, size_t n) {

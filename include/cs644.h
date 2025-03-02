@@ -4,8 +4,10 @@
 #include <stddef.h>
 #include <sys/types.h>
 
+void bail(const char*);
 void* oom_if_null(void* p);
 void handle_err(long long r, const char* s);
+void* malloc_s(size_t n);
 void* realloc_s(void* p, size_t n);
 
 struct lpstr {

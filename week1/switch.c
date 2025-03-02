@@ -35,3 +35,5 @@ struct Language make_language(enum LanguageCode code) {
 
   return lang;
 }
+
+int main() {}

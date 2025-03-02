@@ -8,6 +8,7 @@ libfile = 'lib/cs644.c'
 
 # final projects
 executable('db', 'final/db/main.c', libfile, include_directories: incdir)
+executable('http', 'final/http/main.c', libfile, include_directories: incdir)
 
 # week 1
 executable('crashcourse', 'week1/crashcourse.c')

@@ -10,6 +10,8 @@
 void remove_file(const char* pathname);
 void remove_dir(const char* pathname);
 
+// TODO: use unlinkat to avoid having to construct paths
+
 void remove_file_or_dir(const char* pathname) {
   struct stat statbuf;
   int r = stat(pathname, &statbuf);

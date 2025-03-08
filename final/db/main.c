@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/file.h>
 #include <unistd.h>
 
 #include "cs644.h"
@@ -21,8 +22,10 @@ void usage(void);
 #define BLOCK_SIZE (MAX_KEY_SIZE + MAX_VAL_SIZE + 2)
 
 int dbfile_open() {
-  int fd = open(DB_FILE, O_CREAT | O_RDWR | O_APPEND, 0644);
+  int fd = open(DB_FILE, O_CREAT | O_RDWR | O_APPEND, 0600);
   handle_err(fd, "open (dbfile_open)");
+  int r = flock(fd, LOCK_EX);
+  handle_err(r, "flock(LOCK_EX)");
   return fd;
 }
 
@@ -96,6 +99,8 @@ void dbfile_append(int handle, const char* key, const char* val) {
 void dbfile_close(int handle) {
   int r = fsync(handle);
   handle_err(r, "fsync (dbfile_close)");
+  r = flock(handle, LOCK_UN);
+  handle_err(r, "flock(LOCK_UN) (dbfile_close)");
   r = close(handle);
   handle_err(r, "close (dbfile_close)");
 }

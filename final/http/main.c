@@ -1,15 +1,24 @@
+#include <assert.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "cs644.h"
 
 
-const char* LOG_FILE = "/home/ian/http.log";
+#define LOG_FILE_DIR       "/home/ian/"
+#define LOG_FILE_BASENAME  "http"
+#define LOG_FILE_SUFFIX    ".log"
+#define LOG_FILE_FMT              (LOG_FILE_DIR LOG_FILE_BASENAME ".%d" LOG_FILE_SUFFIX)
+#define LOG_FILE_FMT_LEN  (sizeof  LOG_FILE_DIR LOG_FILE_BASENAME ".X"  LOG_FILE_SUFFIX)
+
+const char* LOG_FILE = LOG_FILE_DIR LOG_FILE_BASENAME LOG_FILE_SUFFIX;
 
 void usage(void);
 
@@ -19,21 +28,27 @@ void append_to_log() {
   int fd = open(LOG_FILE, O_CREAT | O_APPEND | O_WRONLY, 0644);
   handle_err(fd, "open");
 
-  struct timeval tv;
-  long long r = gettimeofday(&tv, NULL);
-  handle_err(r, "gettimeofday");
+  while (1) {
+    struct timeval tv;
+    long long r = gettimeofday(&tv, NULL);
+    handle_err(r, "gettimeofday");
 
-  char line[MAX_LINE];
-  int bytes_needed = snprintf(line, MAX_LINE, "%ld server started\n", tv.tv_sec);
-  if (bytes_needed >= MAX_LINE) {
-    bail("buffer too small (snprintf)");
+    char line[MAX_LINE];
+    int bytes_needed = snprintf(line, MAX_LINE, "%ld server heartbeat\n", tv.tv_sec);
+    if (bytes_needed >= MAX_LINE) {
+      bail("buffer too small (snprintf)");
+    }
+
+    r = write(fd, line, bytes_needed);
+    handle_err(r, "write");
+
+    struct timespec duration = { .tv_sec = 1, .tv_nsec = 0};
+    r = nanosleep(&duration, NULL);
+    handle_err(r, "nanosleep");
   }
 
-  r = write(fd, line, bytes_needed);
-  handle_err(r, "write");
-
-  r = close(fd);
-  handle_err(fd, "close");
+  int r = close(fd);
+  handle_err(r, "close");
 }
 
 #define READ_BUFSZ 4096
@@ -63,6 +78,39 @@ unsigned long count_log_lines() {
   return line_count;
 }
 
+void log_file_n(int n, char* buf) {
+  assert(n >= 0);
+  assert(n < 10);
+
+  if (n == 0) {
+    strcpy(buf, LOG_FILE);
+    return;
+  }
+
+  size_t bytes = LOG_FILE_FMT_LEN;
+  int r = snprintf(buf, bytes, LOG_FILE_FMT, n);
+  assert(r < bytes);
+}
+
+void rotate_logs() {
+  char buf1[LOG_FILE_FMT_LEN];
+  char buf2[LOG_FILE_FMT_LEN];
+  log_file_n(5, buf1);
+  int r = unlink(buf1);
+  if (r < 0 && errno != ENOENT) {
+    handle_err(r, "unlink");
+  }
+
+  for (int i = 4; i >= 0; i--) {
+    log_file_n(i, buf1);
+    log_file_n(i + 1, buf2);
+    int r = rename(buf1, buf2);
+    if (r < 0 && errno != ENOENT) {
+      handle_err(r, "rename");
+    }
+  }
+}
+
 int main(int argc, char* argv[]) {
   if (argc < 2) {
     usage();
@@ -82,6 +130,12 @@ int main(int argc, char* argv[]) {
 
     unsigned long n = count_log_lines();
     printf("log lines: %lu\n", n);
+  } else if (strcmp(cmd, "rotate") == 0) {
+    if (argc != 2) {
+      usage();
+    }
+
+    rotate_logs();
   } else {
     usage();
   }

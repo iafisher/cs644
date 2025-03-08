@@ -22,3 +22,6 @@ executable('line-by-line', 'week2/solutions/line-by-line.c', libfile, include_di
 executable('open-errors', 'week2/solutions/open-errors.c')
 executable('read-after-write', 'week2/solutions/read-after-write.c', libfile, include_directories: incdir)
 executable('simultaneous', 'week2/solutions/simultaneous.c', libfile, include_directories: incdir)
+
+# week 3
+executable('simultaneous-with-locking', 'week3/simultaneous-with-locking.c', libfile, include_directories: incdir)

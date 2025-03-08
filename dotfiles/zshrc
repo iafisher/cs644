@@ -1,0 +1,9 @@
+# NOTE: Keep in sync with `./bashrc`
+
+export CS644_SHARE=/usr/share/cs644
+export RUSTUP_HOME="$CS644_SHARE/rustup"
+export CARGO_HOME="$CS644_SHARE/cargo"
+export PATH="$PATH:$HOME/.local/bin"
+source "$CARGO_HOME/env"
+
+eval "$(fzf --zsh)"

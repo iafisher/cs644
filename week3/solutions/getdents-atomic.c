@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -30,18 +31,25 @@ void* test_atomic_getdents(void* data) {
   handle_err(fd, "open");
 
   for (int i = 0; i < 200; i++) {
+    if ((i + 1) % 10 == 0) {
+      printf("getdents: iter %d\n", i);
+    }
+
     ssize_t bytes = getdents64(fd, buf, n);
     handle_err(bytes, "getdents64");
 
     struct linux_dirent* ent;
-    int seen[26] = {0};
+    int seen[1000] = {0};
     for (size_t bpos = 0; bpos < bytes;) {
       ent = (struct linux_dirent*)(buf + bpos);
-      char c = ent->d_name[0];
-      if (c >= 'a' && c <= 'z') {
-        int i = c - 'a';
+      int i = atoi(ent->d_name);
+      if (i != 0) {
+        if (i > 1000) {
+          i -= 1000;
+        }
+
         if (seen[i]) {
-          printf("getdents: saw both old and new versions of '%c'\n", c);
+          printf("getdents: saw both old and new versions of '%s'\n", ent->d_name);
           pthread_exit(NULL);
         }
         seen[i] = 1;
@@ -60,16 +68,19 @@ void do_one_readdir() {
   DIR* dp = opendir(TMPDIR);
   struct dirent* ent;
 
-  int seen[26] = {0};
+  int seen[1000] = {0};
   while ((ent = readdir(dp)) != NULL) {
-    char c = ent->d_name[0];
-    if (!(c >= 'a' && c <= 'z')) {
+    int i = atoi(ent->d_name);
+    if (i == 0) {
       continue;
     }
 
-    int i = c - 'a';
+    if (i >= 1000) {
+      i -= 1000;
+    }
+
     if (seen[i]) {
-      printf("readdir: saw both old and new versions of '%c'\n", c);
+      printf("readdir: saw both old and new versions of '%s'\n", ent->d_name);
       pthread_exit(NULL);
     }
     seen[i] = 1;
@@ -78,15 +89,19 @@ void do_one_readdir() {
 
 void* test_atomic_readdir(void* data) {
   for (int i = 0; i < 200; i++) {
+    if ((i + 1) % 10 == 0) {
+      printf("readdir: iter %d\n", i);
+    }
+
     do_one_readdir();
   }
 
   return NULL;
 }
 
-void shuffle_entries(char c) {
-  char old[] = { c, '\0' };
-  char new[] = { c, '+', '\0' };
+void shuffle_entries(char* old) {
+  char new[100];
+  snprintf(new, 100, "%04d", atoi(old) + 1000);
 
   unlink(new);
   int fd = open(old, O_WRONLY | O_CREAT | O_TRUNC, 0600);
@@ -98,15 +113,15 @@ void shuffle_entries(char c) {
   while (1) {
     r = rename(old, new);
     if (r < 0) {
-      printf("rename (old -> new): %s (e=%s, c='%c', i=%d)\n",
-          strerror(errno), strerrorname_np(errno), c, i);
+      printf("rename (old -> new): %s (e=%s, s='%s', i=%d)\n",
+          strerror(errno), strerrorname_np(errno), old, i);
       break;
     }
 
     r = rename(new, old);
     if (r < 0) {
-      printf("rename (new -> old): %s (e=%s, c='%c', i=%d)\n",
-          strerror(errno), strerrorname_np(errno), c, i);
+      printf("rename (new -> old): %s (e=%s, s='%s', i=%d)\n",
+          strerror(errno), strerrorname_np(errno), old, i);
       break;
     }
     i++;
@@ -114,7 +129,7 @@ void shuffle_entries(char c) {
 }
 
 void* shuffle_entries_thrd(void* data) {
-  shuffle_entries(*((char*)data));
+  shuffle_entries(data);
   return NULL;
 }
 
@@ -131,13 +146,15 @@ int main() {
   pthread_t tid2;
   pthread_create(&tid2, NULL, test_atomic_readdir, NULL);
 
-  char* letters = "abcdefghijklmnopqrstuvwxyz";
-  for (char* p = letters; *p; p++) {
+  for (int i = 1; i < 1000; i++) {
+    size_t bufsz = 5;
+    char* buf = malloc_s(bufsz);
+    snprintf(buf, bufsz, "%04d", i);
     pthread_t tid;
-    pthread_create(&tid, NULL, shuffle_entries_thrd, p);
+    pthread_create(&tid, NULL, shuffle_entries_thrd, buf);
   }
 
-  //pthread_join(tid1, NULL);
+  pthread_join(tid1, NULL);
   pthread_join(tid2, NULL);
   return 0;
 }

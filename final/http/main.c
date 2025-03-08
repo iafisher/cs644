@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/file.h>
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
@@ -39,8 +40,12 @@ void append_to_log() {
       bail("buffer too small (snprintf)");
     }
 
+    r = flock(fd, LOCK_EX);
+    handle_err(r, "flock(LOCK_EX)");
     r = write(fd, line, bytes_needed);
     handle_err(r, "write");
+    r = flock(fd, LOCK_UN);
+    handle_err(r, "flock(LOCK_UN)");
 
     struct timespec duration = { .tv_sec = 1, .tv_nsec = 0};
     r = nanosleep(&duration, NULL);
@@ -61,8 +66,13 @@ unsigned long count_log_lines() {
 
   unsigned long line_count = 0;
   while (1) {
+    int r = flock(fd, LOCK_SH);
+    handle_err(r, "flock(LOCK_SH)");
     ssize_t nread = read(fd, buf, READ_BUFSZ);
     handle_err(nread, "read");
+    r = flock(fd, LOCK_UN);
+    handle_err(r, "flock(LOCK_UN)");
+
     if (nread == 0) {
       // TODO: this assumes that the file terminates with a newline (which our logging
       // function ensures, but would be good to handle this case).

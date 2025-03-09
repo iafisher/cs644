@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
   const char* filename = argv[1];
   struct stat statbuf;
   int r = stat(filename, &statbuf);
-  handle_err(r, "stat");
+  cs644_bail_if_err(r, "stat");
 
   print_perms(statbuf.st_mode >> 6);
   print_perms(statbuf.st_mode >> 3);

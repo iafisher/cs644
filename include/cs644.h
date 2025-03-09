@@ -5,21 +5,20 @@
 #include <stddef.h>
 #include <sys/types.h>
 
-void bail(const char*);
-void* oom_if_null(void* p);
-void handle_err(long long r, const char* s);
-void* malloc_s(size_t n);
-void* realloc_s(void* p, size_t n);
+void cs644_bail(const char*);
+void cs644_bail_if_err(long long r, const char* s);
+void* cs644_malloc_or_bail(size_t n);
+void* cs644_realloc_or_bail(void* p, size_t n);
 
-struct lpstr {
+struct cs644_str {
   char* data;
   size_t len;
   size_t capacity;
 };
 
-struct lpstr lpstr_new();
-void lpstr_append(struct lpstr* s, const char* data, size_t n);
-ssize_t lpstr_find(struct lpstr s, char c);
+struct cs644_str cs644_str_new();
+void cs644_str_append(struct cs644_str* s, const char* data, size_t n);
+ssize_t cs644_str_find(struct cs644_str s, char c);
 
 struct cs644_int_result {
   bool ok;

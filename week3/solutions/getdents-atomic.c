@@ -20,15 +20,12 @@ struct linux_dirent {
   char           d_name[];
 };
 
-void do_one_getdents() {
-}
-
 void* test_atomic_getdents(void* data) {
   size_t n = 50000;
   char buf[n];
 
   int fd = open(TMPDIR, O_RDONLY | O_DIRECTORY);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
 
   for (int i = 0; i < 200; i++) {
     if ((i + 1) % 10 == 0) {
@@ -36,7 +33,7 @@ void* test_atomic_getdents(void* data) {
     }
 
     ssize_t bytes = getdents64(fd, buf, n);
-    handle_err(bytes, "getdents64");
+    cs644_bail_if_err(bytes, "getdents64");
 
     struct linux_dirent* ent;
     int seen[1000] = {0};
@@ -59,7 +56,7 @@ void* test_atomic_getdents(void* data) {
   }
 
   int r = close(fd);
-  handle_err(r, "close");
+  cs644_bail_if_err(r, "close");
 
   return NULL;
 }
@@ -105,9 +102,9 @@ void shuffle_entries(char* old) {
 
   unlink(new);
   int fd = open(old, O_WRONLY | O_CREAT | O_TRUNC, 0600);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
   int r = close(fd);
-  handle_err(fd, "close");
+  cs644_bail_if_err(fd, "close");
 
   int i = 0;
   while (1) {
@@ -136,10 +133,10 @@ void* shuffle_entries_thrd(void* data) {
 int main() {
   int r = mkdir(TMPDIR, 0700);
   if (r < 0 && errno != EEXIST) {
-    handle_err(r, "mkdir");
+    cs644_bail_if_err(r, "mkdir");
   }
   r = chdir(TMPDIR);
-  handle_err(r, "chdir");
+  cs644_bail_if_err(r, "chdir");
 
   pthread_t tid1;
   pthread_create(&tid1, NULL, test_atomic_getdents, NULL);
@@ -148,7 +145,7 @@ int main() {
 
   for (int i = 1; i < 1000; i++) {
     size_t bufsz = 5;
-    char* buf = malloc_s(bufsz);
+    char* buf = cs644_malloc_or_bail(bufsz);
     snprintf(buf, bufsz, "%04d", i);
     pthread_t tid;
     pthread_create(&tid, NULL, shuffle_entries_thrd, buf);

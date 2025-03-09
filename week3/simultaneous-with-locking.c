@@ -20,26 +20,26 @@ int check_all_same_char(const char*, size_t);
 
 void main_read(size_t bufsz) {
   int fd = open(FILENAME, O_RDONLY);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
 
   char buf[bufsz];
   size_t n_reads = 0;
   while (1) {
     long long r = flock(fd, LOCK_SH);
-    handle_err(r, "flock(LOCK_SH)");
+    cs644_bail_if_err(r, "flock(LOCK_SH)");
     ssize_t bytes_read = read(fd, buf, bufsz);
     r = flock(fd, LOCK_UN);
-    handle_err(r, "flock(LOCK_UN)");
+    cs644_bail_if_err(r, "flock(LOCK_UN)");
 
     n_reads++;
-    handle_err(bytes_read, "read");
+    cs644_bail_if_err(bytes_read, "read");
     if (!check_all_same_char(buf, bytes_read)) {
       printf("detected partial write after %lu read(s):\n\n  %.*s\n\n", n_reads, (int)bytes_read, buf);
       break;
     }
 
     r = lseek(fd, 0, SEEK_SET);
-    handle_err(r, "lseek");
+    cs644_bail_if_err(r, "lseek");
   }
 }
 
@@ -48,7 +48,7 @@ void main_write(size_t bufsz) {
   printf("write pid: %d\n", pid);
 
   int fd = open(FILENAME, O_WRONLY | O_TRUNC | O_CREAT, 0600);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
 
   char buf[bufsz];
   unsigned short offset = 0;
@@ -56,14 +56,14 @@ void main_write(size_t bufsz) {
     fill_with_char(buf, bufsz, 'a' + offset);
 
     long long r = flock(fd, LOCK_EX);
-    handle_err(r, "flock(LOCK_EX)");
+    cs644_bail_if_err(r, "flock(LOCK_EX)");
     r = write(fd, buf, bufsz);
-    handle_err(r, "write");
+    cs644_bail_if_err(r, "write");
     r = flock(fd, LOCK_UN);
-    handle_err(r, "flock(LOCK_UN)");
+    cs644_bail_if_err(r, "flock(LOCK_UN)");
 
     r = lseek(fd, 0, SEEK_SET);
-    handle_err(r, "lseek");
+    cs644_bail_if_err(r, "lseek");
 
     offset = (offset + 1) % 26;
   }

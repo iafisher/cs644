@@ -15,7 +15,7 @@ void remove_dir(const char* pathname);
 void remove_file_or_dir(const char* pathname) {
   struct stat statbuf;
   int r = stat(pathname, &statbuf);
-  handle_err(r, "stat");
+  cs644_bail_if_err(r, "stat");
 
   switch (statbuf.st_mode & S_IFMT) {
     case S_IFLNK:
@@ -26,20 +26,20 @@ void remove_file_or_dir(const char* pathname) {
       remove_dir(pathname);
       return;
     default:
-      bail("not removing unknown file type");
+      cs644_bail("not removing unknown file type");
   }
 }
 
 void remove_file(const char* pathname) {
   int r = unlink(pathname);
-  handle_err(r, "unlink");
+  cs644_bail_if_err(r, "unlink");
 }
 
 char* make_subpath(const char* parent, const char* child) {
   size_t n1 = strlen(parent);
   size_t n2 = strlen(child);
 
-  char* r = malloc_s((n1 + n2 + 2) * sizeof *r);
+  char* r = cs644_malloc_or_bail((n1 + n2 + 2) * sizeof *r);
   strcpy(r, parent);
   r[n1] = '/';
   strcpy(r + n1 + 1, child);
@@ -81,14 +81,14 @@ void remove_dir(const char* pathname) {
         remove_file(sbp);
         break;
       default:
-        bail("not removing unknown file type");
+        cs644_bail("not removing unknown file type");
     }
 
     free(sbp);
   }
 
   int r = rmdir(pathname);
-  handle_err(r, "rmdir");
+  cs644_bail_if_err(r, "rmdir");
 }
 
 int main(int argc, char* argv[]) {

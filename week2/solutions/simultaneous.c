@@ -19,20 +19,20 @@ int check_all_same_char(const char*, size_t);
 
 void main_read(size_t bufsz) {
   int fd = open(FILENAME, O_RDONLY);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
 
   char buf[bufsz];
   size_t n_reads = 0;
   while (1) {
     ssize_t bytes_read = read(fd, buf, bufsz);
     n_reads++;
-    handle_err(bytes_read, "read");
+    cs644_bail_if_err(bytes_read, "read");
     if (!check_all_same_char(buf, bytes_read)) {
       printf("detected partial write after %lu read(s):\n\n  %.*s\n\n", n_reads, (int)bytes_read, buf);
       break;
     }
     off_t r = lseek(fd, 0, SEEK_SET);
-    handle_err(r, "lseek");
+    cs644_bail_if_err(r, "lseek");
   }
 }
 
@@ -41,16 +41,16 @@ void main_write(size_t bufsz) {
   printf("write pid: %d\n", pid);
 
   int fd = open(FILENAME, O_WRONLY | O_TRUNC | O_CREAT, 0600);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
 
   char buf[bufsz];
   unsigned short offset = 0;
   while (1) {
     fill_with_char(buf, bufsz, 'a' + offset);
     ssize_t r = write(fd, buf, bufsz);
-    handle_err(r, "write");
+    cs644_bail_if_err(r, "write");
     r = lseek(fd, 0, SEEK_SET);
-    handle_err(r, "lseek");
+    cs644_bail_if_err(r, "lseek");
 
     offset = (offset + 1) % 26;
   }

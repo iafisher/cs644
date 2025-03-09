@@ -27,51 +27,51 @@ void usage(void);
 
 void append_to_log() {
   int fd = open(LOG_FILE, O_CREAT | O_APPEND | O_WRONLY, 0644);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
 
   while (1) {
     struct timeval tv;
     long long r = gettimeofday(&tv, NULL);
-    handle_err(r, "gettimeofday");
+    cs644_bail_if_err(r, "gettimeofday");
 
     char line[MAX_LINE];
     int bytes_needed = snprintf(line, MAX_LINE, "%ld server heartbeat\n", tv.tv_sec);
     if (bytes_needed >= MAX_LINE) {
-      bail("buffer too small (snprintf)");
+      cs644_bail("buffer too small (snprintf)");
     }
 
     r = flock(fd, LOCK_EX);
-    handle_err(r, "flock(LOCK_EX)");
+    cs644_bail_if_err(r, "flock(LOCK_EX)");
     r = write(fd, line, bytes_needed);
-    handle_err(r, "write");
+    cs644_bail_if_err(r, "write");
     r = flock(fd, LOCK_UN);
-    handle_err(r, "flock(LOCK_UN)");
+    cs644_bail_if_err(r, "flock(LOCK_UN)");
 
     struct timespec duration = { .tv_sec = 1, .tv_nsec = 0};
     r = nanosleep(&duration, NULL);
-    handle_err(r, "nanosleep");
+    cs644_bail_if_err(r, "nanosleep");
   }
 
   int r = close(fd);
-  handle_err(r, "close");
+  cs644_bail_if_err(r, "close");
 }
 
 #define READ_BUFSZ 4096
 
 unsigned long count_log_lines() {
   int fd = open(LOG_FILE, O_RDONLY);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
 
   char buf[READ_BUFSZ];
 
   unsigned long line_count = 0;
   while (1) {
     int r = flock(fd, LOCK_SH);
-    handle_err(r, "flock(LOCK_SH)");
+    cs644_bail_if_err(r, "flock(LOCK_SH)");
     ssize_t nread = read(fd, buf, READ_BUFSZ);
-    handle_err(nread, "read");
+    cs644_bail_if_err(nread, "read");
     r = flock(fd, LOCK_UN);
-    handle_err(r, "flock(LOCK_UN)");
+    cs644_bail_if_err(r, "flock(LOCK_UN)");
 
     if (nread == 0) {
       // TODO: this assumes that the file terminates with a newline (which our logging
@@ -108,7 +108,7 @@ void rotate_logs() {
   log_file_n(5, buf1);
   int r = unlink(buf1);
   if (r < 0 && errno != ENOENT) {
-    handle_err(r, "unlink");
+    cs644_bail_if_err(r, "unlink");
   }
 
   for (int i = 4; i >= 0; i--) {
@@ -116,7 +116,7 @@ void rotate_logs() {
     log_file_n(i + 1, buf2);
     int r = rename(buf1, buf2);
     if (r < 0 && errno != ENOENT) {
-      handle_err(r, "rename");
+      cs644_bail_if_err(r, "rename");
     }
   }
 }

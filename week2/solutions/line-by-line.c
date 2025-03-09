@@ -49,13 +49,13 @@ int main(int argc, char* argv[]) {
 #define NOT_DONE ((off_t)1)
 #define READSZ 16
 
-off_t build_line(struct lpstr* s, char* buf, size_t bufsz) {
+off_t build_line(struct cs644_str* s, char* buf, size_t bufsz) {
   if (bufsz == 0) {
     return 0;
   }
 
-  lpstr_append(s, buf, bufsz);
-  ssize_t newline_pos = lpstr_find(*s, '\n');
+  cs644_str_append(s, buf, bufsz);
+  ssize_t newline_pos = cs644_str_find(*s, '\n');
   if (newline_pos == -1) {
     return NOT_DONE;
   }
@@ -76,18 +76,18 @@ off_t build_line(struct lpstr* s, char* buf, size_t bufsz) {
 }
 
 char* readline(int fd) {
-  struct lpstr s = lpstr_new();
+  struct cs644_str s = cs644_str_new();
   while (1) {
     char buf[READSZ];
     ssize_t nread = read(fd, buf, READSZ);
-    handle_err(nread, "read");
+    cs644_bail_if_err(nread, "read");
 
     off_t lseek_offset = build_line(&s, buf, nread);
     if (lseek_offset == NOT_DONE) {
       continue;
     } else {
       off_t r = lseek(fd, lseek_offset, SEEK_CUR);
-      handle_err(r, "lseek");
+      cs644_bail_if_err(r, "lseek");
       break;
     }
   }

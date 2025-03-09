@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
   // https://iafisher.com/cs644/spring2025/week2
 
   int fd = open(TEMPFILE, O_CREAT | O_TRUNC | O_RDWR, 0600);
-  handle_err(fd, "open");
+  cs644_bail_if_err(fd, "open");
   // Call `clean_up` (which removes the temporary file) when the program exits,
   // (`atexit` is a C standard library feature.)
   atexit(clean_up);
@@ -31,23 +31,23 @@ int main(int argc, char* argv[]) {
   long long r = write(fd, s, BUFSZ);
   assert(r == BUFSZ);
   r = fsync(fd);
-  handle_err(r, "fsync");
+  cs644_bail_if_err(r, "fsync");
 
   // Next, rewind and fill the file with X's, but don't flush.
   r = lseek(fd, 0, SEEK_SET);
-  handle_err(r, "lseek");
+  cs644_bail_if_err(r, "lseek");
   fill_with_char(s, BUFSZ, 'X');
   r = write(fd, s, BUFSZ);
   assert(r == BUFSZ);
 
   // Rewind again and start reading.
   r = lseek(fd, 0, SEEK_SET);
-  handle_err(r, "lseek");
+  cs644_bail_if_err(r, "lseek");
 
   char s2[BUFSZ];
   while (1) {
     ssize_t nread = read(fd, s2, BUFSZ);
-    handle_err(nread, "read");
+    cs644_bail_if_err(nread, "read");
     if (nread == 0) {
       break;
     }
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
   puts("read-after-write: success");
 
   r = close(fd);
-  handle_err(r, "close");
+  cs644_bail_if_err(r, "close");
 
   return 0;
 }

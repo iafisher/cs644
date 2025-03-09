@@ -23,9 +23,9 @@ void usage(void);
 
 int dbfile_open() {
   int fd = open(DB_FILE, O_CREAT | O_RDWR | O_APPEND, 0600);
-  handle_err(fd, "open (dbfile_open)");
+  cs644_bail_if_err(fd, "open (dbfile_open)");
   int r = flock(fd, LOCK_EX);
-  handle_err(r, "flock(LOCK_EX)");
+  cs644_bail_if_err(r, "flock(LOCK_EX)");
   return fd;
 }
 
@@ -58,22 +58,22 @@ void db_entry_free(struct db_entry entry) {
 
 struct db_entry dbfile_read(int handle) {
   // disk format: flat list of blocks
-  char* block = malloc_s(BLOCK_SIZE);
+  char* block = cs644_malloc_or_bail(BLOCK_SIZE);
   ssize_t bytes_read = read(handle, block, BLOCK_SIZE);
-  handle_err(bytes_read, "read (dbfile_read)");
+  cs644_bail_if_err(bytes_read, "read (dbfile_read)");
   if (bytes_read == 0) {
     return db_entry_empty();
   } else if (bytes_read != BLOCK_SIZE) {
     // TODO: handle this more gracefully
-    bail("failed to read block");
+    cs644_bail("failed to read block");
   }
 
   if (block[MAX_KEY_SIZE] != '\0') {
-    bail("db file corrupted (key not null-terminated)");
+    cs644_bail("db file corrupted (key not null-terminated)");
   }
 
   if (block[BLOCK_SIZE - 1] != '\0') {
-    bail("db file corrupted (block not null-terminated)");
+    cs644_bail("db file corrupted (block not null-terminated)");
   }
 
   return (struct db_entry){ .block = block };
@@ -91,18 +91,18 @@ void dbfile_append(int handle, const char* key, const char* val) {
   padded_val[MAX_VAL_SIZE] = '\0';
 
   ssize_t r = write(handle, padded_key, MAX_KEY_SIZE + 1);
-  handle_err(r, "write (dbfile_append)");
+  cs644_bail_if_err(r, "write (dbfile_append)");
   r = write(handle, padded_val, MAX_VAL_SIZE + 1);
-  handle_err(r, "write (dbfile_append)");
+  cs644_bail_if_err(r, "write (dbfile_append)");
 }
 
 void dbfile_close(int handle) {
   int r = fsync(handle);
-  handle_err(r, "fsync (dbfile_close)");
+  cs644_bail_if_err(r, "fsync (dbfile_close)");
   r = flock(handle, LOCK_UN);
-  handle_err(r, "flock(LOCK_UN) (dbfile_close)");
+  cs644_bail_if_err(r, "flock(LOCK_UN) (dbfile_close)");
   r = close(handle);
-  handle_err(r, "close (dbfile_close)");
+  cs644_bail_if_err(r, "close (dbfile_close)");
 }
 
 struct db_entry db_get(const char* key) {

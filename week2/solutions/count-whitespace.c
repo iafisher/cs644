@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "cs644.h"
 
 void usage(char* argv[]) {
   fprintf(stderr, "usage: %s <filename> <bufsz>\n", argv[0]);
@@ -28,7 +29,7 @@ int main(int argc, char* argv[]) {
     filename = argv[1];
   } else if (argc == 3 && !is_flag(argv[1]) && !is_flag(argv[2])) {
     filename = argv[1];
-    long long n = atoll(argv[2]);
+    long long n = cs644_str_to_int_or_bail(argv[2]);
     if (n <= 0) {
       usage(argv);
       return 1;

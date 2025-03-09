@@ -60,3 +60,27 @@ ssize_t lpstr_find(struct lpstr s, char c) {
   }
   return -1;
 }
+
+struct cs644_int_result cs644_str_to_int(const char* s) {
+  struct cs644_int_result invalid = { .ok = false, .r = 0 };
+  if (s[0] == '\0') {
+    return invalid;
+  }
+
+  char* endptr;
+  long long r = strtoll(s, &endptr, 10);
+  if (endptr[0] != '\0') {
+    return invalid;
+  }
+
+  return (struct cs644_int_result){ .ok = true, .r = r };
+}
+
+long long cs644_str_to_int_or_bail(const char* s) {
+  struct cs644_int_result r = cs644_str_to_int(s);
+  if (!r.ok) {
+    fprintf(stderr, "fatal: could not parse string as integer: %s\n", s);
+    exit(1);
+  }
+  return r.r;
+}

@@ -17,7 +17,7 @@ executable('redact', 'week1/solutions/redact.c')
 
 # week 2
 executable('week2-example', 'week2/example.c')
-executable('count-whitespace', 'week2/solutions/count-whitespace.c')
+executable('count-whitespace', 'week2/solutions/count-whitespace.c', libfile, include_directories: incdir)
 executable('line-by-line', 'week2/solutions/line-by-line.c', libfile, include_directories: incdir)
 executable('open-errors', 'week2/solutions/open-errors.c')
 executable('read-after-write', 'week2/solutions/read-after-write.c', libfile, include_directories: incdir)

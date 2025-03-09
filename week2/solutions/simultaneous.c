@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
     usage(argv);
   }
 
-  long long bufsz = atoll(argv[2]);
+  long long bufsz = cs644_str_to_int_or_bail(argv[2]);
   if (bufsz <= 0) {
     usage(argv);
   }

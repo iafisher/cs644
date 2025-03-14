@@ -1,5 +1,6 @@
 #include "cs644.h"
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -59,6 +60,80 @@ ssize_t cs644_str_find(struct cs644_str s, char c) {
     }
   }
   return -1;
+}
+
+void cs644_str_free(struct cs644_str s) {
+  if (s.data == NULL) {
+    return;
+  }
+
+  free(s.data);
+}
+
+struct cs644_str_vec cs644_str_vec_new() {
+  return (struct cs644_str_vec){
+    .data = NULL,
+    .len = 0,
+    .capacity = 0,
+  };
+}
+
+char* cs644_str_vec_get(struct cs644_str_vec v, size_t i) {
+  if (i >= v.len) {
+    return NULL;
+  }
+  return v.data[i];
+}
+
+size_t cs644_str_vec_len(struct cs644_str_vec v) {
+  return v.len;
+}
+
+char* copy_substring(const char* s, size_t start, size_t end_exclusive) {
+  assert(start < end_exclusive);
+  size_t n = end_exclusive - start;
+  char* r = cs644_malloc_or_bail(n + 1);
+  memcpy(r, s + start, n);
+  r[n] = '\0';
+  return r;
+}
+
+struct cs644_str_vec cs644_str_vec_split(const char* s, char c) {
+  struct cs644_str_vec v = cs644_str_vec_new();
+
+  size_t n = strlen(s);
+  size_t start = 0;
+  for (size_t i = 0; i < n; i++) {
+    if (s[i] == c) {
+      cs644_str_vec_append(&v, copy_substring(s, start, i));
+      start = i + 1;
+    }
+  }
+
+  if (start < n - 1) {
+    cs644_str_vec_append(&v, copy_substring(s, start, n));
+  }
+
+  return v;
+}
+
+void cs644_str_vec_append(struct cs644_str_vec* vec, char* s) {
+  if (vec->len == vec->capacity) {
+    size_t newcap = vec->capacity == 0 ? 8 : (vec->capacity * 2);
+    vec->data = cs644_realloc_or_bail(vec->data, newcap * sizeof *vec->data);
+    vec->capacity = newcap;
+  }
+
+  vec->data[vec->len] = s;
+  vec->len += 1;
+}
+
+void cs644_str_vec_free(struct cs644_str_vec vec) {
+  if (vec.data == NULL) {
+    return;
+  }
+
+  free(vec.data);
 }
 
 struct cs644_int_result cs644_str_to_int(const char* s) {

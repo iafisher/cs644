@@ -19,6 +19,20 @@ struct cs644_str {
 struct cs644_str cs644_str_new();
 void cs644_str_append(struct cs644_str* s, const char* data, size_t n);
 ssize_t cs644_str_find(struct cs644_str s, char c);
+void cs644_str_free(struct cs644_str);
+
+struct cs644_str_vec {
+  char** data;
+  size_t len;
+  size_t capacity;
+};
+
+struct cs644_str_vec cs644_str_vec_new();
+char* cs644_str_vec_get(struct cs644_str_vec, size_t);
+size_t cs644_str_vec_len(struct cs644_str_vec);
+struct cs644_str_vec cs644_str_vec_split(const char*, char);
+void cs644_str_vec_append(struct cs644_str_vec*, char*);
+void cs644_str_vec_free(struct cs644_str_vec);
 
 struct cs644_int_result {
   bool ok;

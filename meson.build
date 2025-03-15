@@ -32,3 +32,4 @@ executable('getdents-atomic', 'week3/solutions/getdents-atomic.c', libfile, incl
 # week 4
 executable('forkexec', 'week4/forkexec.c')
 executable('execs', 'week4/solutions/execs.c', libfile, include_directories: incdir)
+executable('mytime', 'week4/solutions/mytime.c', libfile, include_directories: incdir)

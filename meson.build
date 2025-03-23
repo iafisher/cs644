@@ -36,3 +36,6 @@ executable('mytime', 'week4/solutions/mytime.c', libfile, include_directories: i
 
 # week 5
 executable('shm_example', 'week5/shm_example.c')
+
+# week 6
+executable('hello_conn', 'week6/hello_conn.c', libfile, include_directories: incdir)

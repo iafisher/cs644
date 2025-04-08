@@ -36,8 +36,12 @@ executable('mytime', 'week4/solutions/mytime.c', libfile, include_directories: i
 
 # week 5
 executable('shm_example', 'week5/shm_example.c')
+executable('pipebuffer', 'week5/solutions/pipebuffer.c', libfile, include_directories: incdir)
+executable('ringbuffer', 'week5/solutions/ringbuffer.c', libfile, include_directories: incdir)
 
 # week 6
 executable('hello_conn', 'week6/hello_conn.c', libfile, include_directories: incdir)
-executable('pipebuffer', 'week5/solutions/pipebuffer.c', libfile, include_directories: incdir)
-executable('ringbuffer', 'week5/solutions/ringbuffer.c', libfile, include_directories: incdir)
+
+# week 7
+thread_dep = dependency('threads')
+executable('locks', 'week7/solutions/locks.c', libfile, dependencies: [thread_dep], include_directories: incdir)

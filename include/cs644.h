@@ -42,4 +42,6 @@ struct cs644_int_result {
 struct cs644_int_result cs644_str_to_int(const char*);
 long long cs644_str_to_int_or_bail(const char*);
 
+void cs644_sleep_millis(unsigned int);
+
 #endif // CS644_LPSTR_H

@@ -1,9 +1,11 @@
 #include "cs644.h"
 
 #include <assert.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 
 void cs644_bail(const char* msg) {
@@ -158,4 +160,17 @@ long long cs644_str_to_int_or_bail(const char* s) {
     exit(1);
   }
   return r.r;
+}
+
+void cs644_sleep_millis(unsigned int millis) {
+  struct timespec spec = { .tv_sec = millis / 1000, .tv_nsec = (millis % 1000) * 1000000};
+  struct timespec rem;
+  while (1) {
+    int r = nanosleep(&spec, &rem);
+    if (r == -1 && errno == EINTR) {
+      spec = rem;
+    } else {
+      break;
+    }
+  }
 }

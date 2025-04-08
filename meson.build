@@ -46,3 +46,4 @@ executable('hello_conn', 'week6/hello_conn.c', libfile, include_directories: inc
 thread_dep = dependency('threads')
 executable('locks', 'week7/solutions/locks.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 executable('main_returns', 'week7/solutions/main_returns.c', libfile, dependencies: [thread_dep], include_directories: incdir)
+executable('deadlock', 'week7/solutions/deadlock.c', libfile, dependencies: [thread_dep], include_directories: incdir)

@@ -47,3 +47,6 @@ thread_dep = dependency('threads')
 executable('locks', 'week7/solutions/locks.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 executable('main_returns', 'week7/solutions/main_returns.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 executable('deadlock', 'week7/solutions/deadlock.c', libfile, dependencies: [thread_dep], include_directories: incdir)
+
+# week 8
+executable('sigexample', 'week8/sigexample.c', libfile, include_directories: incdir)

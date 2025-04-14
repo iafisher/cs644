@@ -24,5 +24,15 @@ int main() {
     puts("SIGUSR1 pending signal WAS NOT inherited across exec().");
   }
 
+  struct sigaction act;
+  r = sigaction(SIGUSR2, NULL, &act);
+  cs644_bail_if_err(r, "sigaction");
+
+  if (act.sa_handler == SIG_IGN) {
+    puts("SIGUSR2 disposition WAS inherited across exec().");
+  } else {
+    puts("SIGUSR2 disposition WAS NOT inherited across exec().");
+  }
+
   return 0;
 }

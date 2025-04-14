@@ -12,6 +12,9 @@ int main() {
   int r = sigaction(SIGUSR1, &(struct sigaction){.sa_handler = handler }, NULL);
   cs644_bail_if_err(r, "sigaction");
 
+  r = sigaction(SIGUSR2, &(struct sigaction){.sa_handler = SIG_IGN }, NULL);
+  cs644_bail_if_err(r, "sigaction");
+
   sigset_t set, oldset;
   sigemptyset(&set);
   sigaddset(&set, SIGUSR1);

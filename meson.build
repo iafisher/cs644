@@ -50,3 +50,9 @@ executable('deadlock', 'week7/solutions/deadlock.c', libfile, dependencies: [thr
 
 # week 8
 executable('sigexample', 'week8/sigexample.c', libfile, include_directories: incdir)
+
+# week 9
+executable('open_nonblock', 'week9/open_nonblock.c', libfile, include_directories: incdir)
+executable('double_delivery', 'week9/solutions/double_delivery.c', libfile, include_directories: incdir)
+executable('reentrant_handler', 'week9/solutions/reentrant_handler.c', libfile, include_directories: incdir)
+executable('multiple_pending', 'week9/solutions/multiple_pending.c', libfile, include_directories: incdir)

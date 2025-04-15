@@ -59,3 +59,4 @@ executable('multiple_pending', 'week9/solutions/multiple_pending.c', libfile, in
 executable('sig_fork', 'week9/solutions/sig_fork.c', libfile, include_directories: incdir)
 executable('sig_pre_exec', 'week9/solutions/sig_pre_exec.c', libfile, include_directories: incdir)
 executable('sig_post_exec', 'week9/solutions/sig_post_exec.c', libfile, include_directories: incdir)
+executable('signalfd', 'week9/solutions/signalfd.c', libfile, include_directories: incdir)

@@ -4,9 +4,6 @@ export CARGO_HOME="$d/cargo"
 export PATH="$PATH:$HOME/.local/bin"
 source "$CARGO_HOME/env"
 
-alias bat="batcat"
-alias fd="fdfind"
-
 if [[ "$SHELL" = *bash ]]; then
   eval "$(fzf --bash)"
 elif [[ "$SHELL" = *zsh ]]; then

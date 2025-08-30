@@ -1,0 +1,12 @@
+export CS644=/usr/share/cs644
+export RUSTUP_HOME="$CS644/rustup"
+export CARGO_HOME="$CS644/cargo"
+export PATH="$PATH:$HOME/.local/bin"
+source "$CARGO_HOME/env"
+
+eval "$(fzf --bash)"
+if [[ "$SHELL" = *bash ]]; then
+  eval "$(fzf --bash)"
+elif [[ "$SHELL" = *zsh ]]; then
+  eval "$(fzf --zsh)"
+fi

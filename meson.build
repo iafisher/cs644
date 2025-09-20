@@ -25,7 +25,7 @@ executable('simultaneous', 'week2/solutions/simultaneous.c', libfile, include_di
 # # week 3
 # executable('simultaneous-with-locking', 'week3/simultaneous-with-locking.c', libfile, include_directories: incdir)
 # executable('printperm', 'week3/solutions/printperm.c', libfile, include_directories: incdir)
-# executable('rmrf', 'week3/solutions/rmrf.c', libfile, include_directories: incdir)
+executable('cp', 'week3/solutions/cp.c', libfile, include_directories: incdir)
 # executable('getdents-atomic', 'week3/solutions/getdents-atomic.c', libfile, include_directories: incdir)
 # 
 # # week 4

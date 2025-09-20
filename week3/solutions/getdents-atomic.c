@@ -160,7 +160,7 @@ void usage(char* progname) {
 }
 
 int main(int argc, char* argv[]) {
-  if (argc != 2) {
+  if (!cs644_check_n_args(1, argc, argv)) {
     usage(argv[0]);
   }
 

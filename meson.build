@@ -27,29 +27,30 @@ executable('simultaneous', 'week2/solutions/simultaneous.c', libfile, include_di
 # executable('printperm', 'week3/solutions/printperm.c', libfile, include_directories: incdir)
 executable('cp', 'week3/solutions/cp.c', libfile, include_directories: incdir)
 executable('getdents-atomic', 'week3/solutions/getdents-atomic.c', libfile, include_directories: incdir)
-# 
+executable('files-are-hard', 'week3/solutions/files-are-hard.c', libfile, include_directories: incdir)
+
 # # week 4
 # executable('forkexec', 'week4/forkexec.c')
 # executable('execs', 'week4/solutions/execs.c', libfile, include_directories: incdir)
 # executable('mytime', 'week4/solutions/mytime.c', libfile, include_directories: incdir)
-# 
+
 # # week 5
 # executable('shm_example', 'week5/shm_example.c')
 # executable('pipebuffer', 'week5/solutions/pipebuffer.c', libfile, include_directories: incdir)
 # executable('ringbuffer', 'week5/solutions/ringbuffer.c', libfile, include_directories: incdir)
-# 
+
 # # week 6
 # executable('hello_conn', 'week6/hello_conn.c', libfile, include_directories: incdir)
-# 
+
 # # week 7
 # thread_dep = dependency('threads')
 # executable('locks', 'week7/solutions/locks.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 # executable('main_returns', 'week7/solutions/main_returns.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 # executable('deadlock', 'week7/solutions/deadlock.c', libfile, dependencies: [thread_dep], include_directories: incdir)
-# 
+
 # # week 8
 # executable('sigexample', 'week8/sigexample.c', libfile, include_directories: incdir)
-# 
+
 # # week 9
 # executable('open_nonblock', 'week9/open_nonblock.c', libfile, include_directories: incdir)
 # executable('double_delivery', 'week9/solutions/double_delivery.c', libfile, include_directories: incdir)

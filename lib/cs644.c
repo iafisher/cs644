@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 
 void cs644_bail(const char* msg) {
@@ -70,6 +71,23 @@ void cs644_str_free(struct cs644_str s) {
   }
 
   free(s.data);
+}
+
+char* cs644_readfile(int fd) {
+  struct cs644_str s = cs644_str_new();
+
+  size_t buflen = 4096;
+  char buf[buflen];
+  while (1) {
+    ssize_t nread = read(fd, buf, buflen);
+    cs644_bail_if_err(nread, "read");
+    if (nread == 0) {
+      break;
+    }
+    cs644_str_append(&s, buf, nread);
+  }
+
+  return s.data;
 }
 
 struct cs644_str_vec cs644_str_vec_new() {
@@ -173,4 +191,18 @@ void cs644_sleep_millis(unsigned int millis) {
       break;
     }
   }
+}
+
+bool cs644_check_n_args(int n, int argc, char* argv[]) {
+  if (argc - 1 != n) {
+    return false;
+  }
+
+  for (int i = 1; i < argc; i++) {
+    if (argv[i][0] == '-') {
+      return false;
+    }
+  }
+
+  return true;
 }

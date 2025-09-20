@@ -96,7 +96,7 @@ void cp_dir(int srcfd, int destfd) {
 
 
 int main(int argc, char* argv[]) {
-  if (argc != 3 || argv[1][0] == '-' || argv[2][0] == '-') {
+  if (!cs644_check_n_args(2, argc, argv)) {
     fprintf(stderr, "usage: %s SRC DEST\n", argv[0]);
     return 1;
   }

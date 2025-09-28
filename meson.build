@@ -31,8 +31,8 @@ executable('files-are-hard', 'week3/solutions/files-are-hard.c', libfile, includ
 
 # # week 4
 executable('forkexec', 'week4/forkexec.c')
-# executable('execs', 'week4/solutions/execs.c', libfile, include_directories: incdir)
-# executable('mytime', 'week4/solutions/mytime.c', libfile, include_directories: incdir)
+executable('execs', 'week4/solutions/execs.c', libfile, include_directories: incdir)
+executable('mytime', 'week4/solutions/mytime.c', libfile, include_directories: incdir)
 
 # # week 5
 # executable('shm_example', 'week5/shm_example.c')

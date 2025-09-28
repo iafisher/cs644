@@ -206,3 +206,12 @@ bool cs644_check_n_args(int n, int argc, char* argv[]) {
 
   return true;
 }
+
+long long cs644_bail_if_err_with_debug(long long result, const char* debug, const char* file, int lineno) {
+  if (result < 0) {
+    fprintf(stderr, "fatal: %s, line %d: ", file, lineno);
+    perror(debug);
+    exit(1);
+  }
+  return result;
+}

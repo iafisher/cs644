@@ -48,4 +48,8 @@ void cs644_sleep_millis(unsigned int);
 
 bool cs644_check_n_args(int n, int argc, char* argv[]);
 
+long long cs644_bail_if_err_with_debug(long long result, const char* debug, const char* file, int lineno);
+#define BAIL_IF_ERR(call) \
+  cs644_bail_if_err_with_debug((call), #call, __FILE__, __LINE__)
+
 #endif // CS644_H

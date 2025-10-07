@@ -52,4 +52,6 @@ long long cs644_bail_if_err_with_debug(long long result, const char* debug, cons
 #define BAIL_IF_ERR(call) \
   cs644_bail_if_err_with_debug((call), #call, __FILE__, __LINE__)
 
+void rot13(char*);
+
 #endif // CS644_H

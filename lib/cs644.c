@@ -215,3 +215,19 @@ long long cs644_bail_if_err_with_debug(long long result, const char* debug, cons
   }
   return result;
 }
+
+char rot13_c(char c) {
+    if ('A' <= c && c <= 'Z') {
+      return (((c - 'A') + 13) % 26) + 'A';
+    } else if ('a' <= c && c <= 'z') {
+      return (((c - 'a') + 13) % 26) + 'a';
+    } else {
+      return c;
+    }
+}
+
+void rot13(char* s) {
+  for (; *s; s++) {
+    *s = rot13_c(*s);
+  }
+}

@@ -41,7 +41,8 @@ executable('ringbuffer', 'week5/solutions/ringbuffer.c', libfile, include_direct
 executable('week5-in-class-example', 'week5/in-class-example.c', libfile, include_directories: incdir)
 
 # # week 6
-executable('hello_conn', 'week6/hello_conn.c', libfile, include_directories: incdir)
+executable('hello_conn_tcp', 'week6/hello_conn_tcp.c', libfile, include_directories: incdir)
+executable('rot13_udp', 'week6/rot13_udp.c', libfile, include_directories: incdir)
 
 # # week 7
 # thread_dep = dependency('threads')

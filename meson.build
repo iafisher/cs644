@@ -43,6 +43,7 @@ executable('week5-in-class-example', 'week5/in-class-example.c', libfile, includ
 # # week 6
 executable('hello_conn_tcp', 'week6/hello_conn_tcp.c', libfile, include_directories: incdir)
 executable('rot13_udp', 'week6/rot13_udp.c', libfile, include_directories: incdir)
+executable('connect_bind', 'week6/solutions/connect_bind.c', libfile, include_directories: incdir)
 
 # # week 7
 # thread_dep = dependency('threads')

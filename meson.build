@@ -45,6 +45,7 @@ executable('hello_conn_tcp', 'week6/hello_conn_tcp.c', libfile, include_director
 executable('rot13_udp', 'week6/rot13_udp.c', libfile, include_directories: incdir)
 executable('connect_bind', 'week6/solutions/connect_bind.c', libfile, include_directories: incdir)
 executable('recv', 'week6/solutions/recv.c', libfile, include_directories: incdir)
+executable('close_shutdown', 'week6/solutions/close_shutdown.c', libfile, include_directories: incdir)
 
 # # week 7
 # thread_dep = dependency('threads')

@@ -48,7 +48,8 @@ executable('recv', 'week6/solutions/recv.c', libfile, include_directories: incdi
 executable('close_shutdown', 'week6/solutions/close_shutdown.c', libfile, include_directories: incdir)
 
 # # week 7
-# thread_dep = dependency('threads')
+thread_dep = dependency('threads')
+executable('week7_example', 'week7/in_class_example.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 # executable('locks', 'week7/solutions/locks.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 # executable('main_returns', 'week7/solutions/main_returns.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 # executable('deadlock', 'week7/solutions/deadlock.c', libfile, dependencies: [thread_dep], include_directories: incdir)

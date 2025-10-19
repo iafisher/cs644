@@ -53,6 +53,7 @@ executable('week7_example', 'week7/in_class_example.c', libfile, dependencies: [
 executable('locks', 'week7/solutions/locks.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 executable('main_returns', 'week7/solutions/main_returns.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 executable('deadlock', 'week7/solutions/deadlock.c', libfile, dependencies: [thread_dep], include_directories: incdir)
+executable('lock_n_exit', 'week7/solutions/lock_n_exit.c', libfile, dependencies: [thread_dep], include_directories: incdir)
 
 # # week 8
 # executable('sigexample', 'week8/sigexample.c', libfile, include_directories: incdir)

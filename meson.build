@@ -57,6 +57,7 @@ executable('lock_n_exit', 'week7/solutions/lock_n_exit.c', libfile, dependencies
 
 # # week 8
 # executable('sigexample', 'week8/sigexample.c', libfile, include_directories: incdir)
+executable('sigcatch', 'week8/sigcatch.c', libfile, include_directories: incdir)
 
 # # week 9
 # executable('open_nonblock', 'week9/open_nonblock.c', libfile, include_directories: incdir)

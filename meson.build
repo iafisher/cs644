@@ -55,6 +55,7 @@ executable('sigcatch', 'week8/sigcatch.c', libfile, include_directories: incdir)
 executable('epoll_server', 'week9/epoll_server.c', libfile, include_directories: incdir)
 topfiles = 'lib/cs644_topfiles.c'
 executable('bigfiles_naive', 'week9/bigfiles_naive.c', libfile, topfiles, include_directories: incdir)
+executable('cat_io_uring', 'week9/cat_io_uring.c', libfile, include_directories: incdir)
 # executable('open_nonblock', 'week9/open_nonblock.c', libfile, include_directories: incdir)
 # executable('double_delivery', 'week9/solutions/double_delivery.c', libfile, include_directories: incdir)
 # executable('reentrant_handler', 'week9/solutions/reentrant_handler.c', libfile, include_directories: incdir)

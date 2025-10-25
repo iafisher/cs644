@@ -52,6 +52,14 @@ long long cs644_bail_if_err_with_debug(long long result, const char* debug, cons
 #define BAIL_IF_ERR(call) \
   cs644_bail_if_err_with_debug((call), #call, __FILE__, __LINE__)
 
+long long cs644_bail_if_err_with_debug_except(long long result, const char* debug, const char* file, int lineno, int except_err);
+#define BAIL_IF_ERR_EXCEPT(call, err) \
+  cs644_bail_if_err_with_debug_except((call), #call, __FILE__, __LINE__, err)
+
+long long cs644_bail_if_err_with_debug_except2(long long result, const char* debug, const char* file, int lineno, int except_err1, int except_err2);
+#define BAIL_IF_ERR_EXCEPT2(call, err1, err2) \
+  cs644_bail_if_err_with_debug_except2((call), #call, __FILE__, __LINE__, err1, err2)
+
 void rot13(char*);
 
 #endif // CS644_H

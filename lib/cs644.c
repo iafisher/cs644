@@ -216,6 +216,24 @@ long long cs644_bail_if_err_with_debug(long long result, const char* debug, cons
   return result;
 }
 
+long long cs644_bail_if_err_with_debug_except(long long result, const char* debug, const char* file, int lineno, int except_err) {
+  if (result < 0 && errno != except_err) {
+    fprintf(stderr, "fatal: %s, line %d: ", file, lineno);
+    perror(debug);
+    exit(1);
+  }
+  return result;
+}
+
+long long cs644_bail_if_err_with_debug_except2(long long result, const char* debug, const char* file, int lineno, int except_err1, int except_err2) {
+  if (result < 0 && errno != except_err1 && errno != except_err2) {
+    fprintf(stderr, "fatal: %s, line %d: ", file, lineno);
+    perror(debug);
+    exit(1);
+  }
+  return result;
+}
+
 char rot13_c(char c) {
     if ('A' <= c && c <= 'Z') {
       return (((c - 'A') + 13) % 26) + 'A';

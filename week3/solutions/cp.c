@@ -2,7 +2,6 @@
  * https://iafisher.com/cs644/fall2025/week3
  */
 
-#define _GNU_SOURCE // necessary to expose `getdents64`
 #include <dirent.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -12,15 +11,6 @@
 #include <sys/types.h> // for `ino64_t` and `off64_t`
 #include <unistd.h>
 #include "cs644.h"
-
-// as specified in getdents64(2)
-struct linux_dirent64 {
-  ino64_t d_ino;
-  off64_t d_off;
-  unsigned short d_reclen;
-  unsigned char d_type;
-  char d_name[];
-};
 
 void cp_file(int fd, int dirfd, const char* name) {
   // NOTE: should probably copy the mode bits from the source file...

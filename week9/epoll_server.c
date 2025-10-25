@@ -2,7 +2,6 @@
  * https://iafisher.com/cs644/fall2025/week9
  */
 
-#define _GNU_SOURCE // for accept4
 #include <errno.h>
 #include <fcntl.h>
 #include <netdb.h>

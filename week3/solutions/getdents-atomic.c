@@ -7,7 +7,6 @@
  * rename X to X+1000 (e.g., 0000 becomes 1000) and back. If getdents64 presents a consistent view
  * of the directory, we should never see both X and X+1000 simultaneously in the same call.
  */
-#define _GNU_SOURCE
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -26,14 +25,6 @@
 #define FILES_PER_THREAD    100
 
 const char* TMPDIR = "/tmp/getdents-test";
-
-struct linux_dirent64 {
-  ino64_t        d_ino;
-  off64_t        d_off;
-  unsigned short d_reclen;
-  unsigned char  d_type;
-  char           d_name[];
-};
 
 void* test_atomic_getdents(void* data) {
   size_t n = 50000;

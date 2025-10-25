@@ -62,4 +62,12 @@ long long cs644_bail_if_err_with_debug_except2(long long result, const char* deb
 
 void rot13(char*);
 
+// as specified in getdents64(2)
+struct linux_dirent64 {
+  ino64_t d_ino;
+  off64_t d_off;
+  unsigned short d_reclen;
+  unsigned char d_type;
+  char d_name[];
+};
 #endif // CS644_H

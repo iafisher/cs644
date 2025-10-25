@@ -9,8 +9,6 @@
 #include <unistd.h>
 #include "cs644.h"
 
-// TODO: not sure why this isn't declared in unistd.h
-int execveat(int dirfd, const char* pathname, char* argv[], char* envp[], int flags);
 extern char** environ;
 
 /** Look for `pathname` on the PATH if it does not contain a slash. */

@@ -31,7 +31,7 @@ int main() {
   printf("server: PID %d\n", getpid());
 
   struct addrinfo* addr = get_localhost();
-  int sockfd = BAIL_IF_ERR(socket(addr->ai_family, addr->ai_socktype | O_NONBLOCK, addr->ai_protocol));
+  int sockfd = BAIL_IF_ERR(socket(addr->ai_family, addr->ai_socktype | SOCK_NONBLOCK, addr->ai_protocol));
 
   BAIL_IF_ERR(bind(sockfd, addr->ai_addr, addr->ai_addrlen));
   freeaddrinfo(addr);

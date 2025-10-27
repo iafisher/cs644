@@ -50,6 +50,13 @@ executable('lock_n_exit', 'week7/solutions/lock_n_exit.c', libfile, dependencies
 
 # week 8
 executable('sigcatch', 'week8/sigcatch.c', libfile, include_directories: incdir)
+executable('double_delivery', 'week8/solutions/double_delivery.c', libfile, include_directories: incdir)
+executable('reentrant_handler', 'week8/solutions/reentrant_handler.c', libfile, include_directories: incdir)
+executable('multiple_pending', 'week8/solutions/multiple_pending.c', libfile, include_directories: incdir)
+executable('sig_fork', 'week8/solutions/sig_fork.c', libfile, include_directories: incdir)
+executable('sig_pre_exec', 'week8/solutions/sig_pre_exec.c', libfile, include_directories: incdir)
+executable('sig_post_exec', 'week8/solutions/sig_post_exec.c', libfile, include_directories: incdir)
+executable('signalfd', 'week8/solutions/signalfd.c', libfile, include_directories: incdir)
 
 # week 9
 executable('epoll_server', 'week9/epoll_server.c', libfile, include_directories: incdir)
@@ -59,10 +66,3 @@ executable('cat_io_uring', 'week9/cat_io_uring.c', libfile, include_directories:
 liburing_dep = dependency('liburing', required: true)
 executable('cat_liburing', 'week9/cat_liburing.c', libfile, dependencies: [liburing_dep], include_directories: incdir)
 # executable('open_nonblock', 'week9/open_nonblock.c', libfile, include_directories: incdir)
-# executable('double_delivery', 'week9/solutions/double_delivery.c', libfile, include_directories: incdir)
-# executable('reentrant_handler', 'week9/solutions/reentrant_handler.c', libfile, include_directories: incdir)
-# executable('multiple_pending', 'week9/solutions/multiple_pending.c', libfile, include_directories: incdir)
-# executable('sig_fork', 'week9/solutions/sig_fork.c', libfile, include_directories: incdir)
-# executable('sig_pre_exec', 'week9/solutions/sig_pre_exec.c', libfile, include_directories: incdir)
-# executable('sig_post_exec', 'week9/solutions/sig_post_exec.c', libfile, include_directories: incdir)
-# executable('signalfd', 'week9/solutions/signalfd.c', libfile, include_directories: incdir)

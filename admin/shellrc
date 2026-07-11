@@ -10,4 +10,6 @@ elif [[ "$SHELL" = *zsh ]]; then
   eval "$(fzf --zsh)"
 fi
 
+alias bat="batcat"
+
 unset d

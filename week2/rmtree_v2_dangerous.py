@@ -26,6 +26,11 @@ def rmtree_v2_dangerous(path: str) -> None:
         # delicate timing, either: Eve could create her symlink as soon as she see Bob create a
         # temporary directory, before he has even started to delete it.
         #
+        # It has to be a symlink to a directory since `os.unlink` doesn't follow symlinks, e.g.,
+        # if Eve had instead symlinked /tmp/myfiles/mischief to /home/bob/valuables/gold.txt, then
+        # when Bob called `os.unlink("/tmp/myfiles/mischief")` it would just remove the symlink,
+        # not the target file.
+        #
         # `follow_symlinks=False` is a good start, but unfortunately it's not enough.
         if entry.is_dir(follow_symlinks=False):
             rmtree_v2_dangerous(p)

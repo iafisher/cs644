@@ -80,6 +80,18 @@ def rmtree_fd(dir_fd: int) -> None:
             os.unlink(entry.name, dir_fd=dir_fd)
 
 
+# `O_DIRECTORY` and `O_NOFOLLOW` exist on Linux but are not universally available. The traditional
+# cross-platform solution is:
+#
+#  - Call `lstat` on the path to be opened.
+#  - If `lstat` reports that it is a directory, call `open`.
+#  - On the file descriptor returned by `open`, call `fstat`. If the inode and device number are
+#    the same, we know that the file has not been tampered and we can safely continue. If they are
+#    different, then something is fishy.
+#
+# In each of the syscalls, we still need to use `dir_fd` to prevent from parent-symlink attacks.
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("path")

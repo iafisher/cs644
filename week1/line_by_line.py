@@ -22,6 +22,12 @@ class LineReader:
         self.chunk_size = chunk_size
 
     def read_line(self) -> bytes:
+        """
+        Read the next line of the file.
+
+        Returns an empty bytestring at end of file.
+        """
+
         if self.eof:
             return b""
 

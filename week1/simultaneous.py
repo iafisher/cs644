@@ -1,4 +1,10 @@
+"""
+Solution to the in-class exercise "Simultaneous read/write" for week 1 of CS644.
+
+https://iafisher.com/cs644/summer2026/week1-files-pt-1
+"""
 import argparse
+
 import os
 import uuid
 from pathlib import Path

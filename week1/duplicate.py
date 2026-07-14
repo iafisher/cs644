@@ -9,6 +9,9 @@ import os
 
 
 def duplicate(inpath: str, outpath: str, *, block_size: int = 4096) -> None:
+    """
+    Copy all the bytes of `inpath` to `outpath`, creating the latter.
+    """
     ifd = os.open(inpath, os.O_RDONLY)
     # `os.O_EXCL` causes `os.open` to raise an error if the file already exists,
     # ensuring we do not overwrite an existing file.

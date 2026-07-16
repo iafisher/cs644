@@ -6,7 +6,7 @@ https://iafisher.com/cs644/summer2026/week2-files-pt-2
 import argparse
 import os
 
-# There were two subtle issues with `rmtree_v2.py`:
+# There were two subtle issues with `rmtree_v2_dangerous.py`:
 #
 #   - A timing attack: if Eve can change a directory to a symlink to a directory in between the
 #     calls to `is_dir` and `rmtree`, she can still trick Bob into deleting his own files.
